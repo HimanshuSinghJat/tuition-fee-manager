@@ -138,17 +138,13 @@ button {
 <h2 class="title">Tuition Fee Dashboard</h2>
 
 <div class="top-bar">
-
     <input type="text" id="search" placeholder="Search by name..." oninput="renderTable()">
-
     <select id="sort" onchange="renderTable()">
         <option value="">Sort</option>
         <option value="name">Name</option>
         <option value="class">Class</option>
     </select>
-
     <a href="index.html" class="back-btn">← Back</a>
-
 </div>
 
 <div class="table-wrapper">
@@ -180,49 +176,44 @@ button {
 <script>
 
 let students = JSON.parse(localStorage.getItem("students")) || [];
-
-const monthsOrder = [0,1,2,3,4,5,6,7,8,9,10,11];
-const currentMonth = new Date().getMonth();
 const body = document.getElementById("body");
 
-// session check
+// ✅ active using year
 function active(s,m){
-    if(s.startMonth <= s.endMonth){
-        return m>=s.startMonth && m<=s.endMonth;
-    } else {
-        return m>=s.startMonth || m<=s.endMonth;
+    if(s.startYear === s.endYear){
+        return m >= s.startMonth && m <= s.endMonth;
     }
+    return m >= s.startMonth || m <= s.endMonth;
 }
 
-// 🔥 correct real-world logic
-function hasStarted(m, s){
+// ✅ correct real-world logic
+function hasStarted(m,s){
 
-    if(s.startMonth > s.endMonth){
+    const today = new Date();
 
-        if(m >= s.startMonth){
-            return m <= currentMonth;
-        }
-        else{
-            if(currentMonth < s.startMonth){
-                return m <= currentMonth;
-            }
-            return false;
-        }
+    let year = s.startYear;
+
+    // cross year fix
+    if(s.startMonth > s.endMonth && m <= s.endMonth){
+        year = s.endYear;
     }
-    else{
-        return m <= currentMonth;
-    }
+
+    let d = new Date(year, m);
+
+    return d <= today;
 }
 
 function renderTable(){
 
     let data=[...students];
 
+    // search
     let q=document.getElementById("search").value.toLowerCase();
     if(q){
         data=data.filter(s=>s.name.toLowerCase().includes(q));
     }
 
+    // sort
     let sort=document.getElementById("sort").value;
     if(sort==="name") data.sort((a,b)=>a.name.localeCompare(b.name));
     if(sort==="class") data.sort((a,b)=>a.class.localeCompare(b.class));
@@ -237,16 +228,16 @@ function renderTable(){
 
         row+=`<td>${s.name}</td><td>${s.class}</td>`;
 
-        monthsOrder.forEach(m=>{
+        for(let m=0;m<12;m++){
 
             if(!active(s,m)){
                 row+=`<td>-</td>`;
-                return;
+                continue;
             }
 
             if(!hasStarted(m,s)){
                 row+=`<td><button class="disabled">-</button></td>`;
-                return;
+                continue;
             }
 
             let st=s.payments[m];
@@ -259,7 +250,7 @@ function renderTable(){
                 ${st?'Paid':'Pending'}
                 </button>
             </td>`;
-        });
+        }
 
         // advance
         row+=`<td>
@@ -270,10 +261,11 @@ function renderTable(){
         </td>`;
 
         // totals
-        let paid=0, due=0;
+        let paid=0,due=0;
 
-        monthsOrder.forEach(m=>{
-            if(!active(s,m) || !hasStarted(m,s)) return;
+        for(let m=0;m<12;m++){
+
+            if(!active(s,m) || !hasStarted(m,s)) continue;
 
             if(m===s.endMonth){
                 if(s.advancePaid || s.payments[m]) paid+=s.fee;
@@ -282,13 +274,13 @@ function renderTable(){
                 if(s.payments[m]) paid+=s.fee;
                 else due+=s.fee;
             }
-        });
+        }
 
         row+=`<td>₹${paid}</td><td>₹${due}</td>`;
 
         // edit
         row+=`<td>
-            ${currentMonth > s.endMonth ?
+            ${new Date().getFullYear() > s.endYear ?
             `<button class="edit" onclick="edit(${i})">Edit</button>`:'-'}
         </td>`;
 

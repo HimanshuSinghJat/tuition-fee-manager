@@ -6,7 +6,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -27,7 +27,6 @@
             align-items: center;
             justify-content: center;
             background: var(--bg-gradient);
-            color: var(--text-main);
         }
 
         .container {
@@ -35,28 +34,15 @@
             max-width: 450px;
             margin: 20px;
             background: var(--glass-bg);
-            backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
         }
 
         h2 {
             text-align: center;
-            margin-top: 0;
             margin-bottom: 30px;
             font-weight: 800;
-            font-size: 1.8rem;
-            letter-spacing: -0.025em;
-            background: linear-gradient(to right, #4f46e5, #9333ea);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .input-group {
@@ -65,154 +51,129 @@
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-size: 14px;
         }
 
         input, select {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.2s;
-            box-sizing: border-box;
-            background: white;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
         }
 
         button {
             width: 100%;
             padding: 14px;
-            margin-top: 10px;
             background: var(--primary);
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        button:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        button:active {
-            transform: translateY(0);
         }
 
         .links {
             text-align: center;
-            margin-top: 24px;
+            margin-top: 20px;
         }
 
-        a {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        a:hover {
-            color: var(--primary-hover);
-            text-decoration: underline;
-        }
-
-        /* Group for horizontal selects */
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 10px;
         }
     </style>
-
 </head>
 
 <body>
 
-    <div class="container">
-        <h2>Add Student</h2>
+<div class="container">
 
-        <div class="input-group">
-            <label for="name">Student Name</label>
-            <input type="text" id="name" placeholder="Enter name">
-        </div>
+    <h2>Add Student</h2>
 
-        <div class="input-group">
-            <label for="class">Class</label>
-            <input type="text" id="class" placeholder="Enter class">
-        </div>
-
-        <div class="input-group">
-            <label for="fee">Monthly Fee (₹)</label>
-            <input type="number" id="fee" placeholder="Enter amount">
-        </div>
-
-        <div class="grid">
-            <div class="input-group">
-                <label for="startMonth">Start Month</label>
-                <select id="startMonth">
-                    <option value="">Select</option>
-                    <option value="0">January</option>
-                    <option value="1">February</option>
-                    <option value="2">March</option>
-                    <option value="3">April</option>
-                    <option value="4">May</option>
-                    <option value="5">June</option>
-                    <option value="6">July</option>
-                    <option value="7">August</option>
-                    <option value="8">September</option>
-                    <option value="9">October</option>
-                    <option value="10">November</option>
-                    <option value="11">December</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label for="endMonth">End Month</label>
-                <select id="endMonth">
-                    <option value="">Select</option>
-                    <option value="0">January</option>
-                    <option value="1">February</option>
-                    <option value="2">March</option>
-                    <option value="3">April</option>
-                    <option value="4">May</option>
-                    <option value="5">June</option>
-                    <option value="6">July</option>
-                    <option value="7">August</option>
-                    <option value="8">September</option>
-                    <option value="9">October</option>
-                    <option value="10">November</option>
-                    <option value="11">December</option>
-                </select>
-            </div>
-        </div>
-
-        <button id="addBtn">Add Student</button>
-
-        <div class="links">
-            <a href="dashboard.html">View Dashboard →</a>
-        </div>
+    <div class="input-group">
+        <label>Name</label>
+        <input type="text" id="name">
     </div>
+
+    <div class="input-group">
+        <label>Class</label>
+        <input type="text" id="class">
+    </div>
+
+    <div class="input-group">
+        <label>Fee</label>
+        <input type="number" id="fee">
+    </div>
+
+    <!-- Months -->
+    <div class="grid">
+
+        <div class="input-group">
+            <label>Start Month</label>
+            <select id="startMonth">
+                <option value="">Select</option>
+                <option value="0">Jan</option><option value="1">Feb</option>
+                <option value="2">Mar</option><option value="3">Apr</option>
+                <option value="4">May</option><option value="5">Jun</option>
+                <option value="6">Jul</option><option value="7">Aug</option>
+                <option value="8">Sep</option><option value="9">Oct</option>
+                <option value="10">Nov</option><option value="11">Dec</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>End Month</label>
+            <select id="endMonth">
+                <option value="">Select</option>
+                <option value="0">Jan</option><option value="1">Feb</option>
+                <option value="2">Mar</option><option value="3">Apr</option>
+                <option value="4">May</option><option value="5">Jun</option>
+                <option value="6">Jul</option><option value="7">Aug</option>
+                <option value="8">Sep</option><option value="9">Oct</option>
+                <option value="10">Nov</option><option value="11">Dec</option>
+            </select>
+        </div>
+
+    </div>
+
+    <!-- Years -->
+    <div class="grid">
+
+        <div class="input-group">
+            <label>Start Year</label>
+            <select id="startYear">
+                <option value="">Select</option>
+                <option>2025</option>
+                <option>2026</option>
+                <option>2027</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>End Year</label>
+            <select id="endYear">
+                <option value="">Select</option>
+                <option>2025</option>
+                <option>2026</option>
+                <option>2027</option>
+            </select>
+        </div>
+
+    </div>
+
+    <button onclick="addStudent()">Add Student</button>
+
+    <div class="links">
+        <a href="dashboard.html">View Dashboard →</a>
+    </div>
+
+</div>
 
 <script>
 
-const button = document.querySelector("button");
-
-button.addEventListener("click", function () {
+function addStudent(){
 
     const name = document.getElementById("name").value;
     const studentClass = document.getElementById("class").value;
@@ -221,44 +182,38 @@ button.addEventListener("click", function () {
     const startMonth = document.getElementById("startMonth").value;
     const endMonth = document.getElementById("endMonth").value;
 
-    // Validation
-    if (!name || !studentClass || !fee || startMonth === "" || endMonth === "") {
+    const startYear = document.getElementById("startYear").value;
+    const endYear = document.getElementById("endYear").value;
+
+    if (!name || !studentClass || !fee || startMonth === "" || endMonth === "" || !startYear || !endYear) {
         alert("Please fill all fields");
         return;
     }
 
-
-    // Create student object
     const student = {
         name: name,
         class: studentClass,
         fee: Number(fee),
         startMonth: Number(startMonth),
         endMonth: Number(endMonth),
+        startYear: Number(startYear),
+        endYear: Number(endYear),
         payments: Array(12).fill(false),
         advancePaid: false
     };
 
-
-    // Get existing students
     let students = JSON.parse(localStorage.getItem("students")) || [];
 
-    // Add new student
     students.push(student);
 
-    // Save back to localStorage
     localStorage.setItem("students", JSON.stringify(students));
 
     alert("Student added!");
 
-    // Clear form
-    document.getElementById("name").value = "";
-    document.getElementById("class").value = "";
-    document.getElementById("fee").value = "";
-    document.getElementById("startMonth").value = "";
-    document.getElementById("endMonth").value = "";
-});
+    location.reload();
+}
 
 </script>
+
 </body>
 </html>
