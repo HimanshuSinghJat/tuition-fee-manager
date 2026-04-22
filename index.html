@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tuition Fee Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            margin: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-weight: 800;
+            font-size: 1.8rem;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #4f46e5, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        /* Group for horizontal selects */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Add Student</h2>
+
+        <div class="input-group">
+            <label for="name">Student Name</label>
+            <input type="text" id="name" placeholder="Enter name">
+        </div>
+
+        <div class="input-group">
+            <label for="class">Class</label>
+            <input type="text" id="class" placeholder="Enter class">
+        </div>
+
+        <div class="input-group">
+            <label for="fee">Monthly Fee (₹)</label>
+            <input type="number" id="fee" placeholder="Enter amount">
+        </div>
+
+        <div class="grid">
+            <div class="input-group">
+                <label for="startMonth">Start Month</label>
+                <select id="startMonth">
+                    <option value="">Select</option>
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="endMonth">End Month</label>
+                <select id="endMonth">
+                    <option value="">Select</option>
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="addBtn">Add Student</button>
+
+        <div class="links">
+            <a href="dashboard.html">View Dashboard →</a>
+        </div>
+    </div>
+
+<script>
+
+const button = document.querySelector("button");
+
+button.addEventListener("click", function () {
+
+    const name = document.getElementById("name").value;
+    const studentClass = document.getElementById("class").value;
+    const fee = document.getElementById("fee").value;
+
+    const startMonth = document.getElementById("startMonth").value;
+    const endMonth = document.getElementById("endMonth").value;
+
+    // Validation
+    if (!name || !studentClass || !fee || startMonth === "" || endMonth === "") {
+        alert("Please fill all fields");
+        return;
+    }
+
+
+    // Create student object
+    const student = {
+        name: name,
+        class: studentClass,
+        fee: Number(fee),
+        startMonth: Number(startMonth),
+        endMonth: Number(endMonth),
+        payments: Array(12).fill(false),
+        advancePaid: false
+    };
+
+
+    // Get existing students
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+
+    // Add new student
+    students.push(student);
+
+    // Save back to localStorage
+    localStorage.setItem("students", JSON.stringify(students));
+
+    alert("Student added!");
+
+    // Clear form
+    document.getElementById("name").value = "";
+    document.getElementById("class").value = "";
+    document.getElementById("fee").value = "";
+    document.getElementById("startMonth").value = "";
+    document.getElementById("endMonth").value = "";
+});
+
+</script>
+</body>
+</html>

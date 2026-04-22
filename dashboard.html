@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fee Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* 🌈 Background */
+body {
+    font-family: Arial;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #6a5acd, #7b5fcf, #8a6be0);
+    min-height: 100vh;
+}
+
+/* Title */
+.title {
+    text-align: center;
+    color: white;
+    margin-bottom: 15px;
+}
+
+/* Top controls */
+.top-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.top-bar input,
+.top-bar select {
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+}
+
+/* Back button */
+.back-btn {
+    background: black;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+/* Table wrapper */
+.table-wrapper {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    max-width: 1200px;
+    margin: auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Scroll */
+.table-container {
+    overflow-x: auto;
+}
+
+/* Table */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    min-width: 1000px;
+}
+
+/* Header */
+th {
+    background: #f0f0f0;
+    padding: 10px;
+    border-bottom: 2px solid #ccc;
+    border-right: 1px solid #ddd;
+}
+
+/* Cells */
+td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #f0f0f0;
+}
+
+th:last-child, td:last-child {
+    border-right: none;
+}
+
+/* Buttons */
+button {
+    padding: 5px 8px;
+    border-radius: 5px;
+    border: none;
+    font-size: 12px;
+    min-width: 65px;
+    font-weight: bold;
+}
+
+.paid {
+    background: green;
+    color: white;
+}
+
+.pending {
+    background: red;
+    color: white;
+}
+
+.disabled {
+    background: #ddd;
+    color: #777;
+}
+
+.edit {
+    background: blue;
+    color: white;
+}
+
+.delete {
+    background: black;
+    color: white;
+}
+
+/* Highlight */
+.defaulter {
+    background: #ffe5e5;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2 class="title">Tuition Fee Dashboard</h2>
+
+<div class="top-bar">
+
+    <input type="text" id="search" placeholder="Search by name..." oninput="renderTable()">
+
+    <select id="sort" onchange="renderTable()">
+        <option value="">Sort</option>
+        <option value="name">Name</option>
+        <option value="class">Class</option>
+    </select>
+
+    <a href="index.html" class="back-btn">← Back</a>
+
+</div>
+
+<div class="table-wrapper">
+<div class="table-container">
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Class</th>
+<th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th>
+<th>May</th><th>Jun</th><th>Jul</th><th>Aug</th>
+<th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
+<th>Advance</th>
+<th>Paid</th>
+<th>Due</th>
+<th>Edit</th>
+<th>Delete</th>
+</tr>
+</thead>
+
+<tbody id="body"></tbody>
+
+</table>
+
+</div>
+</div>
+
+<script>
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+const monthsOrder = [0,1,2,3,4,5,6,7,8,9,10,11];
+const currentMonth = new Date().getMonth();
+const body = document.getElementById("body");
+
+// session check
+function active(s,m){
+    if(s.startMonth <= s.endMonth){
+        return m>=s.startMonth && m<=s.endMonth;
+    } else {
+        return m>=s.startMonth || m<=s.endMonth;
+    }
+}
+
+// 🔥 correct real-world logic
+function hasStarted(m, s){
+
+    if(s.startMonth > s.endMonth){
+
+        if(m >= s.startMonth){
+            return m <= currentMonth;
+        }
+        else{
+            if(currentMonth < s.startMonth){
+                return m <= currentMonth;
+            }
+            return false;
+        }
+    }
+    else{
+        return m <= currentMonth;
+    }
+}
+
+function renderTable(){
+
+    let data=[...students];
+
+    let q=document.getElementById("search").value.toLowerCase();
+    if(q){
+        data=data.filter(s=>s.name.toLowerCase().includes(q));
+    }
+
+    let sort=document.getElementById("sort").value;
+    if(sort==="name") data.sort((a,b)=>a.name.localeCompare(b.name));
+    if(sort==="class") data.sort((a,b)=>a.class.localeCompare(b.class));
+
+    body.innerHTML="";
+
+    data.forEach(s=>{
+
+        let i=students.indexOf(s);
+        let pendingCount=0;
+        let row="";
+
+        row+=`<td>${s.name}</td><td>${s.class}</td>`;
+
+        monthsOrder.forEach(m=>{
+
+            if(!active(s,m)){
+                row+=`<td>-</td>`;
+                return;
+            }
+
+            if(!hasStarted(m,s)){
+                row+=`<td><button class="disabled">-</button></td>`;
+                return;
+            }
+
+            let st=s.payments[m];
+
+            if(!st) pendingCount++;
+
+            row+=`<td>
+                <button onclick="toggle(${i},${m})"
+                class="${st?'paid':'pending'}">
+                ${st?'Paid':'Pending'}
+                </button>
+            </td>`;
+        });
+
+        // advance
+        row+=`<td>
+            <button onclick="adv(${i})"
+            class="${s.advancePaid?'paid':'pending'}">
+            ${s.advancePaid?'Paid':'Pending'}
+            </button>
+        </td>`;
+
+        // totals
+        let paid=0, due=0;
+
+        monthsOrder.forEach(m=>{
+            if(!active(s,m) || !hasStarted(m,s)) return;
+
+            if(m===s.endMonth){
+                if(s.advancePaid || s.payments[m]) paid+=s.fee;
+                else due+=s.fee;
+            } else {
+                if(s.payments[m]) paid+=s.fee;
+                else due+=s.fee;
+            }
+        });
+
+        row+=`<td>₹${paid}</td><td>₹${due}</td>`;
+
+        // edit
+        row+=`<td>
+            ${currentMonth > s.endMonth ?
+            `<button class="edit" onclick="edit(${i})">Edit</button>`:'-'}
+        </td>`;
+
+        // delete
+        row+=`<td>
+            <button class="delete" onclick="del(${i})">Delete</button>
+        </td>`;
+
+        body.innerHTML+=`<tr class="${pendingCount>1?'defaulter':''}">${row}</tr>`;
+    });
+}
+
+function toggle(i,m){
+    students[i].payments[m]=!students[i].payments[m];
+    save();
+}
+
+function adv(i){
+    students[i].advancePaid=!students[i].advancePaid;
+    save();
+}
+
+function del(i){
+    if(confirm("Delete student?")){
+        students.splice(i,1);
+        save();
+    }
+}
+
+function edit(i){
+    let s=students[i];
+
+    let c=prompt("Class:",s.class);
+    if(c===null) return;
+
+    let f=prompt("Fee:",s.fee);
+    if(f===null) return;
+
+    s.class=c;
+    s.fee=Number(f);
+    s.payments=Array(12).fill(false);
+    s.advancePaid=false;
+
+    save();
+}
+
+function save(){
+    localStorage.setItem("students",JSON.stringify(students));
+    renderTable();
+}
+
+renderTable();
+
+</script>
+
+</body>
+</html>
