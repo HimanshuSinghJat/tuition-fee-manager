@@ -82,4 +82,5 @@ This project is designed for small tuition classes and non-technical users who n
 ## Author
 
 HIMANSHU SINGH JAT
-Built as a practical project for real-world use.
+
+* Built as a practical project for real-world use.
